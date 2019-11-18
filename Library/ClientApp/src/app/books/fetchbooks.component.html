@@ -1,0 +1,32 @@
+<h1>Books</h1>
+
+<p *ngIf="!books"><em>Loading...</em></p>
+<button class="btn btn-lg btn-outline-primary" (click)="create()" id="addBtn">Add new book</button>
+<form>
+  <div class="form-group form-inline">
+    Full text search: <input class="form-control ml-2" type="text" [formControl]="filter" />
+  </div>
+</form>
+<table class='table' *ngIf="books">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Publisher</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books$ | async | slice: pageSize | slice: 0:itemsPerPage">
+      <td><ngb-highlight [result]="book.title" [term]="filter.value"></ngb-highlight></td>
+      <td><ngb-highlight [result]="book.author" [term]="filter.value"></ngb-highlight></td>
+      <td><ngb-highlight [result]="book.publishedBy" [term]="filter.value"></ngb-highlight></td>
+      <td>
+        <a [routerLink]="" (click)="delete(book.id)">Delete</a>
+      </td>
+      <td>
+        <a [routerLink]="" (click)="edit(book)">Edit</a>
+      </td>
+    </tr>
+  </tbody>
+  <ngb-pagination [collectionSize]="size" [pageSize]="itemsPerPage" [(page)]="page" [boundaryLinks]="true" (pageChange)="onPageChange(page)"></ngb-pagination>
+</table>
